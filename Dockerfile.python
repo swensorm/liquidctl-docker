@@ -1,0 +1,13 @@
+FROM python:3
+
+RUN apt update \
+ && apt install -y python3-usb i2c-tools python3-smbus git
+
+RUN python -m pip install -U wheel cython pyusb libusb \
+ && python -m pip install git+https://github.com/liquidctl/liquidctl#egg=liquidctl
+
+WORKDIR /config
+
+COPY entrypoint.sh /config/entrypoint.sh
+
+CMD ["/config/entrypoint.sh", "--flush"]
